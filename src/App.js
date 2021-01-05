@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { SnackbarProvider } from 'notistack';
 
-function App() {
+import { Routes } from './routes/Routes';
+import store from './store/store';
+import { persistor } from "./store/store";
+import theme from './theme';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <BrowserRouter>
+              <Routes />
+            </BrowserRouter>
+          </PersistGate>
+        </Provider>
+      </SnackbarProvider>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
